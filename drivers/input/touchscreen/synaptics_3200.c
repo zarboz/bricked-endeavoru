@@ -2644,8 +2644,6 @@ static int synaptics_ts_resume(struct i2c_client *client)
 		if (ts->power)
 			ts->power(0);
 		msleep(150);
-		if (ts->power)
-			ts->power(11);
 		ret = 0;
 		//screen on, disable_irq_wake
 		scr_suspended = false;
@@ -2655,12 +2653,12 @@ static int synaptics_ts_resume(struct i2c_client *client)
 
 	printk(KERN_INFO "[TP] %s: enter\n", __func__);
 
+	if (ts->power)
+		ts->power(11);
+
 #ifdef CONFIG_TOUCHSCREEN_SYNAPTICS_SWEEP2WAKE
 	if (s2w_switch == 0) {
 #endif
-		if (ts->power)
-			ts->power(11);
-
 #ifdef SYN_SUSPEND_RESUME_POWEROFF
 		if (ts->power) {
 			ts->power(1);
